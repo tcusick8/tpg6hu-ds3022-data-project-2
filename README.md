@@ -1,104 +1,14 @@
-# DS3022 Data Project 2 - Puzzle Solver
+# DS3022 Data Project 2
 
 This data project is a puzzle. Your goal is to put the pieces back together in the right order.
 
-## Solution Overview
+Your assignment is to write a Prefect data pipeline that retrieves a number of messages from an SQS queue, parses their contents, and reassembles a complete phrase made up of the fragments from each single message.
 
-This repository contains a complete Prefect data pipeline that:
+Your pipeline can run a single time to produce a complete result, or it can run on a schedule to produce a complete result. Design your workflow however you see fit.
 
-1. **Populates SQS Queue**: Calls the API to populate the SQS queue with 21 messages containing word fragments
-2. **Monitors Queue**: Waits for all messages to become available (handling random delays of 30-900 seconds)
-3. **Collects Messages**: Retrieves all messages from SQS, parsing their order numbers and word fragments
-4. **Reassembles Phrase**: Sorts the fragments by order number to reconstruct the complete phrase
-5. **Submits Solution**: Sends the completed phrase to the submission queue
+You can run your pipeline as many times as you like for testing. There is no penalty for running it multiple times.
 
-## Files
-
-- `prefect.py` - Main Prefect pipeline implementation
-- `test_pipeline.py` - Test script to verify individual components
-- `Pipfile` - Python dependencies
-- `airflow.py` - Airflow DAG implementation (optional)
-
-## Setup and Installation
-
-1. **Install dependencies**:
-   ```bash
-   pipenv install
-   ```
-
-2. **Configure AWS credentials** (if not already configured):
-   ```bash
-   aws configure
-   ```
-
-3. **Install Prefect** (if not using pipenv):
-   ```bash
-   pip install prefect boto3 requests
-   ```
-
-## Running the Pipeline
-
-### Option 1: Run with Prefect CLI
-```bash
-# Activate the virtual environment
-pipenv shell
-
-# Run the pipeline
-python prefect.py
-```
-
-### Option 2: Run as Prefect Flow
-```bash
-# Start Prefect server (optional)
-prefect server start
-
-# Run the flow
-prefect flow run ds3022-puzzle-solver
-```
-
-### Option 3: Test Individual Components
-```bash
-# Run the test script to verify components
-python test_pipeline.py
-```
-
-## Pipeline Architecture
-
-The pipeline consists of the following Prefect tasks:
-
-1. **`populate_sqs_queue()`** - Calls the API to populate the SQS queue
-2. **`get_queue_attributes()`** - Monitors queue status
-3. **`wait_for_messages()`** - Waits for all messages to become available
-4. **`receive_and_parse_message()`** - Receives and parses individual messages
-5. **`delete_message()`** - Deletes processed messages
-6. **`collect_all_messages()`** - Orchestrates message collection
-7. **`reassemble_phrase()`** - Sorts and reassembles the phrase
-8. **`submit_solution()`** - Submits the solution to the submission queue
-
-## Key Features
-
-- **Robust Error Handling**: Comprehensive error handling and logging throughout
-- **Delay Management**: Handles random message delays (30-900 seconds)
-- **Message Cleanup**: Ensures all messages are properly deleted after processing
-- **Monitoring**: Real-time queue status monitoring
-- **Logging**: Detailed logging for debugging and monitoring
-
-## Expected Behavior
-
-1. The pipeline calls the API to populate the queue with 21 messages
-2. It waits for all messages to become available (handling delays)
-3. It collects all 21 messages, parsing their order numbers and words
-4. It sorts the fragments by order number and reassembles the phrase
-5. It submits the complete phrase to the submission queue
-
-## Troubleshooting
-
-- **AWS Credentials**: Ensure your AWS credentials are properly configured
-- **Network Issues**: The pipeline includes retry logic for network issues
-- **Message Delays**: The pipeline waits up to 30 minutes for all messages to become available
-- **Queue Monitoring**: Check the logs for detailed queue status information
-
-## Original Assignment Details
+To get started, [**fork this repository**](https://github.com/uvasds-systems/ds3022-data-project-2/fork) and save your work to your own repository.
 
 ## Task 1 - Populate your SQS Queue
 
@@ -238,9 +148,9 @@ Be sure that your DAG runs successfully within Airflow when you executed in your
 ## Notes / Submission
 
 1. Be sure to fork this repository and commit/push your code back to it for grading.
-2. Your Prefect flow should be saved to a file named `prefect.py`.
+2. Your Prefect flow should be saved to a file named `prefect-flow.py`.
 3. When running your Prefect flow you may use the remote host profile we set up in class `[profiles.uvasds]`, or  `[profiles.local]`. Either is fine.
-4. If you attempt to write an Airflow DAG that should be saved to a file named `airflow.py`.
+4. If you attempt to write an Airflow DAG that should be saved to a file named `airflow-dag.py`.
 5. Secondary Prefect flows or Airflow DAGs are permissible. That is, one flow may also trigger another flow; one DAG may call another DAG, etc.
 6. Your code should log using the built-in logging methods for either Prefect or Airflow. You do not need to use a separate logging package. Do not save or commit log files to your repo.
 7. Do not save or commit any data or database files.
