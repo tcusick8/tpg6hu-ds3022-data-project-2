@@ -9,7 +9,7 @@ from typing import Dict, List, Tuple
 
 from airflow import DAG
 from airflow.providers.standard.operators.python import PythonOperator
-from airflow.sdk.timezone import utcnow
+from airflow.utils.timezone import utcnow
 
 # Default arguments
 default_args = {
@@ -23,7 +23,7 @@ default_args = {
 }
 
 # Initialize SQS client
-sqs = boto3.client('sqs')
+sqs = boto3.client('sqs', region_name='us-east-1')
 
 # Create DAG
 dag = DAG(
