@@ -1,1 +1,5 @@
-Pip*
+.gitignore
+
+Pipfile
+
+Pipfile.lock
